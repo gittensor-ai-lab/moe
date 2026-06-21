@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-namespace blackwell { namespace moe {
+namespace sparkinfer { namespace moe {
 
 struct MoEConfig {
     int num_experts;
@@ -22,6 +22,10 @@ struct MoEConfig {
 
     // Normalize routing weights after top-k selection
     bool normalize_expert_weights = true;
+
+    // Sync-free mode: token counts stay on GPU, never read to CPU.
+    // Required for CUDA graph capture of the full MoE forward pass.
+    bool sync_free = true;
 };
 
 struct RoutingOutput {
@@ -55,4 +59,4 @@ public:
     virtual const MoEConfig& config() const = 0;
 };
 
-}} // namespace blackwell::moe
+}} // namespace sparkinfer::moe
